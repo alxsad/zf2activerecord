@@ -7,7 +7,7 @@ Installation
 step 1 - composer.json
 ``` json
 "require": {
-    "alxsad/Zf2ActiveRecord": "dev-master"
+    "alxsad/zf2activerecord": "dev-master"
 }
 ```
 

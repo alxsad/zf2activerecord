@@ -1,5 +1,5 @@
 {
-    "name": "alxsad/Zf2ActiveRecord",
+    "name": "alxsad/zf2activerecord",
     "description": "ZF2 ActiveRecord",
     "version" : "1.0.0",
     "type": "library",
@@ -9,7 +9,7 @@
         "record",
         "zf2"
     ],
-    "homepage": "https://github.com/alxsad/Zf2ActiveRecord",
+    "homepage": "https://github.com/alxsad/zf2activerecord",
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*"
