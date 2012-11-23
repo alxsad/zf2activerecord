@@ -431,7 +431,7 @@ abstract class AbstractActiveRecord implements ArraySerializableInterface,
     public function __clone ()
     {
         $this->primaryData = null;
-        $this->sql = clone $this->sql;
+        $this->sql = null;
     }
 
     /**
