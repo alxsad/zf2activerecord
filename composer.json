@@ -1,0 +1,22 @@
+{
+    "name": "alxsad/Zf2ActiveRecord",
+    "description": "ZF2 ActiveRecord",
+    "version" : "1.0.0",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "active",
+        "record",
+        "zf2"
+    ],
+    "homepage": "https://github.com/alxsad/Zf2ActiveRecord",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Zf2ActiveRecord\\": "src/"
+        }
+    }
+}
