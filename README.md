@@ -17,6 +17,15 @@ php composer.phar self-update
 php composer.phar update
 ```
 
+Provided Events
+-------------
+* find.pre
+* find.post
+* save.pre
+* save.post
+* delete.pre
+* delete.post
+
 Example 1
 -------------
 module.config.php
@@ -170,7 +179,139 @@ class IndexController extends AbstractActionController
         /* @var $book \Application\Entity\Book */
         $book = $books->findByPk(1);
         $book->setTitle('Very Interested Book');
-        $book->save();
+        $saved = $book->save();
+
+        return array();
+    }
+}
+```
+
+Example 2 (Simple)
+-------------
+module.config.php
+``` php
+    'service_manager' => array(
+        'factories' => array(
+            'books-active-record' => function ($sm) {
+                $adapter = $sm->get('zf2-active-record-adapter');
+                $factory = new \Zf2ActiveRecord\ActiveRecord($adapter, array(
+                    'primaryKey' => 'id',
+                    'tableName'  => 'books',
+                ));
+                return $factory;
+            },
+        ),
+    )
+```
+
+``` php
+<?php
+
+namespace Application\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+
+class IndexController extends AbstractActionController
+{
+    public function indexAction ()
+    {
+        /* @var $books \Zf2ActiveRecord\ActiveRecord */
+        $books = $this->getServiceLocator()->get('books-active-record');
+
+        /* @var $book \Zf2ActiveRecord\ActiveRecord */
+        $book = $books->create(array(
+            'title'  => 'test title',
+            'author' => 'test author',
+        ));
+        $saved = $book->save();
+
+        return array();
+    }
+}
+```
+
+Example 3 (Delete)
+-------------
+``` php
+<?php
+
+namespace Application\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+
+class IndexController extends AbstractActionController
+{
+    public function indexAction ()
+    {
+        /* @var $books \Application\Entity\Book */
+        $books = $this->getServiceLocator()->get('books-active-record');
+
+        /* @var $book \Application\Entity\Book */
+        $book = $books->findByPk(1);
+        $deleted = $book->delete();
+
+        return array();
+    }
+}
+```
+
+Example 4 (Find)
+-------------
+``` php
+<?php
+
+namespace Application\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+
+class IndexController extends AbstractActionController
+{
+    public function indexAction ()
+    {
+        /* @var $books \Zf2ActiveRecord\ActiveRecord */
+        $books = $this->getServiceLocator()->get('books-active-record');
+
+        return array(
+            'books' => $books->find(function(\Zend\Db\Sql\Select $select){
+                $select->where(array('is_active' => 1));
+                $select->limit(10);
+            }),
+        );
+    }
+}
+```
+
+Example 5 (Events)
+-------------
+``` php
+<?php
+
+namespace Application\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+
+class IndexController extends AbstractActionController
+{
+    public function indexAction ()
+    {
+        $this->getEventManager()->getSharedManager()->attach(
+            'Application\Entity\Book', 'save.pre', function($e)
+        {
+            $book = $e->getTarget();
+            if ($book->isNew()) {
+                $book->setTitle($book->getTitle() . ' - new');
+            }
+        });
+
+        /* @var $books \Application\Entity\Book */
+        $books = $this->getServiceLocator()->get('books-active-record');
+
+        /* @var $book \Zf2ActiveRecord\ActiveRecord */
+        $book = $books->create(array(
+            'title'  => 'test title',
+            'author' => 'test author',
+        ));
+        $saved = $book->save();
 
         return array();
     }
