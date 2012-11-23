@@ -317,3 +317,5 @@ class IndexController extends AbstractActionController
     }
 }
 ```
+
+Alex Davidovich (alxsad@gmail.com)
