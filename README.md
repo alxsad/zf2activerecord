@@ -17,6 +17,14 @@ php composer.phar self-update
 php composer.phar update
 ```
 
+step 3 - include module in application.config.php
+``` php
+'modules' => array(
+    'Application',
+    'Zf2ActiveRecord',
+),
+```
+
 Provided Events
 -------------
 * find.pre
